@@ -1,8 +1,6 @@
 import pygame
-import random
-import math
 from ParticleClass import Particle
-
+import time
 # Pygame Initialization
 pygame.init()
 
@@ -26,10 +24,10 @@ particles_count = 100
 d = 10  # Particle diameter for display
 
 # PSO Parameters
-w = 100  # Inertia
-c1 = 10  # Cognitive learning factor
-c2 = 5  # Social learning factor
-maxv = 0.025  # Maximum velocity
+w = 0.5  # Inertia
+c1 = 6.0  # Cognitive learning factor
+c2 = 1.0  # Social learning factor
+maxv = 0.1  # Maximum velocity
 n_iters = 800  # Number of iterations
 
 # Global best
@@ -62,7 +60,7 @@ def main():
 			ejeY = int(abs(particle.y - domMax) / (domMin + domMax) * HEIGHT)
 			pygame.draw.ellipse(screen, GREEN, (ejeX, ejeY, d, d))
 			pygame.draw.line(screen, BLUE, (ejeX, ejeY), (ejeX - 1000 * particle.vx, ejeY + 1000 * particle.vy), 1)
-
+		time.sleep(0.1)
 		pygame.display.flip()
 
 	pygame.quit()

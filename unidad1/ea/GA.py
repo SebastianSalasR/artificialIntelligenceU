@@ -1,8 +1,9 @@
 import numpy as np
+import random
 
 class Gene():
 	
-	def __init__(self, dna_size, dna_bounds, dna_start_position=None, elitism=0.01, population_size=200, mutation_rate=0.01, mutation_sigma=0.1, mutation_decay=0.999, mutation_limit=0.01, mutate_fn=None, crossover_fn=None):
+	def __init__(self, dna_size, dna_bounds, dna_start_position=None, elitism=0.5, population_size=200, mutation_rate=0.01, mutation_sigma=0.1, mutation_decay=0.999, mutation_limit=0.01, mutate_fn=None, crossover_fn=None):
 		
 		self.population = self.create_random_population(dna_size, dna_bounds, population_size)
 		self.population = np.clip(self.population, dna_bounds[0], dna_bounds[1])
@@ -23,7 +24,7 @@ class Gene():
 	def get_solutions(self):
 		self.mutation_sigma *= self.mutation_decay
 		self.mutation_sigma = np.maximum(self.mutation_sigma, self.mutation_limit)
-		
+
 		return self.population
 		
 		
@@ -49,8 +50,8 @@ class Gene():
 			i0 = np.random.choice(sorted_population.shape[0], p=fitnesses_weighting)
 			i1 = np.random.choice(sorted_population.shape[0], p=fitnesses_weighting)
 
-			new_dna = self.__crossover(self.population[i0], self.population[i1])
-			new_dna = self.__mutate(new_dna, self.mutation_sigma, self.mutation_rate)
+			new_dna = self.crossover(self.population[i0], self.population[i1])
+			new_dna = self.mutate(new_dna, self.mutation_sigma, self.mutation_rate)
 			new_population.append(new_dna)
 
 		amount_old = self.population_size - amount_new
@@ -67,20 +68,26 @@ class Gene():
 		
 	def create_random_population(self, dna_size, dna_bounds, population_size):
 		population = np.random.uniform(low=dna_bounds[0], high=dna_bounds[1], size=(population_size, dna_size))
+		
+		#population = random.uniform(dna_bounds[0], dna_bounds[1])
+		#for i in range(population_size):
+		#    population[i] = np.random.uniform(low=dna_bounds[0], high=dna_bounds[1], size=dna_size)
+    
 		return population
 	
 	
-	def __mutate(self, dna, mutation_sigma, mutation_rate):
+	def mutate(self, dna, mutation_sigma, mutation_rate):# dna, magnitude of the mutation, probability of mutation
 		if self.mutate_fn is not None:
 			return self.mutate_fn(dna)
 		
-		if np.random.random_sample() < mutation_rate:
+		if np.random.random_sample() < mutation_rate: # Generates a number in the range [0,1], if this number < mutation_rate, then the dna is mutated
+			# For each value of the gen, a new value is generated acording to the normal distribution multiplied by sigma
 			dna += np.random.standard_normal(size=dna.shape) * mutation_sigma
 		
 		return dna
 		
 	
-	def __crossover(self, dna1, dna2):
+	def crossover(self, dna1, dna2):
 		
 		assert len(dna1) == len(dna2)
 		

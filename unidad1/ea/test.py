@@ -28,8 +28,8 @@ def main():
 			  dna_bounds=(-3, 7),			# DNA cannot optimise outside of these bounds
 			  dna_start_position=[-3, 7],	# DNA begins randomly around this position
 			  elitism=0.5,					# We keep the 50% fittest individuals
-			  population_size=500,			# We have 500 genes in the gene pool
-			  mutation_rate=0.01,			# We have 500 genes in the gene pool
+			  population_size=300,			# We have 500 genes in the gene pool
+			  mutation_rate=0.01,			# Roguhly every 100 dice rolls we mutate
 			  mutation_sigma=0.1,			# The gene will mutated at a bound of (-0.1, 0.1)
 			  mutation_decay=0.999,			# The mutation size will decay each step
 			  mutation_limit=0.01) 			# The mutation size will never get smaller than this
@@ -73,9 +73,9 @@ def main():
 			draw_particle(screen, pos)
 		pygame.display.flip()
 
+		time.sleep(0.1)
 		clock.tick(30)
 		
-		time.sleep(.08)
 	
 	print("\nBest final position: ", best_position)
 	print("best final fitness: ", best_fitness)

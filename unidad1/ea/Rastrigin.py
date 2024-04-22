@@ -13,11 +13,11 @@ class Rastrigin():
 		return A + np.sum([(np.square(x) - A * np.cos(2 * np.pi * x)) for x in position])
 
 	
-	def get_surface(self, resolution=200, bound=5.12):
+	def get_surface(self, resolution=200, bound=3):
 		
-		X = np.linspace(-bound, bound, resolution)    
-		Y = np.linspace(-bound, bound, resolution)  
-		
+		X = np.linspace(-bound, 7, resolution)
+		Y = np.linspace(-bound, bound, resolution)
+				
 		X, Y = np.meshgrid(X, Y)
 		Z = self.__get_error_surface_volume(X, Y, A=10)
 		return np.stack((X, Y, Z))
