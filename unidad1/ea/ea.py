@@ -20,7 +20,7 @@ def main():
 
 	evals_to_best = 0
 
-	# Loop and optimise each step 
+	# Loop and optimize each step 
 	for optimisation_step in range(amount_optimisation_steps):
 
 		# Get the current gene pool
